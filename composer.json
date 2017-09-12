@@ -1,0 +1,11 @@
+{
+    "name": "lumenpress/wp-router",
+    "require": {
+        "lumenpress/nimble": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "LumenPress\\WordPressRouter\\": "src"
+        }
+    }
+}
