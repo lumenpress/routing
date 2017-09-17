@@ -10,6 +10,8 @@ use LumenPress\Nimble\Models\User;
 
 class WordPressRouter
 {
+    protected $middleware = [];
+
     protected $routes = [];
 
     public function __construct()
@@ -52,6 +54,16 @@ class WordPressRouter
         $this->addRoute(['OPTIONS'], $args, $action);
     }
 
+    public function group($options, $callback)
+    {
+        // reset
+        $this->middleware = [];
+        if (isset($options['middleware'])) {
+            $this->middleware = $options['middleware'];
+        }
+        $callback($this);
+    }
+
     public function addRoute($method, $vars, $action)
     {
         if (!is_array($vars)) {
@@ -78,6 +90,15 @@ class WordPressRouter
 
             if (!is_array($action)) {
                 $action = [$action];
+            }
+
+            if (count($action) === 1) {
+                $action = ['middleware' => $this->middleware] + $action;
+            } else if (isset($action['middleware'])) {
+                $middleware = is_array($action['middleware']) 
+                    ? $action['middleware']
+                    : [$action['middleware']];
+                $action['middleware'] = array_merge($middleware, $this->middleware);
             }
 
             foreach ((array)$method as $verb) {
