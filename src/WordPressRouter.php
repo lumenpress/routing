@@ -16,7 +16,7 @@ class WordPressRouter
 
     public function __construct()
     {
-        $this->conditions = (array)config('wordpress.route_conditions');
+        $this->conditions = (array)config('wp/route-conditions');
     }
 
     public function is($args, $action)
