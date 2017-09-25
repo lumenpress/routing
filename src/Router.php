@@ -2,8 +2,10 @@
 
 namespace LumenPress\WordPressRouter;
 
-use FastRoute\Dispatcher;
 use Illuminate\Support\Arr;
+use LumenPress\Nimble\Models\Post;
+use LumenPress\Nimble\Models\Taxonomy;
+use LumenPress\Nimble\Models\User;
 
 class Router
 {
@@ -420,7 +422,7 @@ class Router
     public function dispatch($httpMethod, $uri)
     {
         if (! isset($this->routes[$httpMethod])) {
-            return [Dispatcher::NOT_FOUND];
+            return [0];
         }
 
         $routes = $this->routes[$httpMethod];
@@ -449,12 +451,33 @@ class Router
 
                 foreach ($values as $value) {
                     if (call_user_func_array("is_{$key}", $value)) {
-                        return [Dispatcher::FOUND, $route['action'], []];
+                        return [1, $route['action'], $this->getQueriedVars()];
                     }
                 }
             }
         }
 
-        return [Dispatcher::NOT_FOUND];
+        return [0];
+    }
+
+    public function getQueriedVars()
+    {
+        $obj = get_queried_object();
+        if ($obj instanceof \WP_Post) {
+            $class = Post::getClassNameByType($obj->post_type, Post::class);
+            $post = $class::find($obj->ID);
+            return ['post' => $post];
+        }
+        if ($obj instanceof \WP_Term) {
+            $class = Taxonomy::getClassNameByType($obj->taxonomy, Taxonomy::class);
+            $term = $class::find($obj->term_id);
+            return ['term' => $term];
+        }
+        if ($obj instanceof \WP_User) {
+            $user = User::find($obj->ID);
+            return ['user' => $user];
+        }
+        return [];
     }
 }
+

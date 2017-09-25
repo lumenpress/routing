@@ -1,6 +1,6 @@
 <?php
 
-namespace LumenPress\WordPressRouter;
+namespace LumenPress\WordPressRouter\Lumen;
 
 use FastRoute\Dispatcher;
 use FastRoute\Dispatcher\GroupCountBased;
