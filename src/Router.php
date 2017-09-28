@@ -59,10 +59,10 @@ class Router
      * Register a set of routes with a set of shared attributes.
      *
      * @param  array  $attributes
-     * @param  \Closure  $callback
+     * @param  \Closure|string  $routes
      * @return void
      */
-    public function group(array $attributes, \Closure $callback)
+    public function group(array $attributes, $routes)
     {
         if (isset($attributes['middleware']) && is_string($attributes['middleware'])) {
             $attributes['middleware'] = explode('|', $attributes['middleware']);
@@ -70,9 +70,29 @@ class Router
 
         $this->updateGroupStack($attributes);
 
-        call_user_func($callback, $this);
+        // Once we have updated the group stack, we'll load the provided routes and
+        // merge in the group's attributes when the routes are created. After we
+        // have created the routes, we will pop the attributes off the stack.
+        $this->loadRoutes($routes);
 
         array_pop($this->groupStack);
+    }
+
+    /**
+     * Load the provided routes.
+     *
+     * @param  \Closure|string  $routes
+     * @return void
+     */
+    protected function loadRoutes($routes)
+    {
+        if ($routes instanceof \Closure) {
+            $routes($this);
+        } else {
+            $router = $this;
+
+            require $routes;
+        }
     }
 
     /**

@@ -61,9 +61,10 @@ Route::patch($condition, $callback);
 Route::delete($condition, $callback);
 Route::options($condition, $callback);
 
-Route::middleware('auth')
-    ->namespace('App\Http\Controllers')
-    ->group(function () {
+Route::group([
+        'middleware' => 'auth', 
+        'namespace' => 'App\Http\Controllers'
+    ],function () {
     //
 });
 ```

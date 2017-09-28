@@ -1,7 +1,7 @@
 {
     "name": "lumenpress/wp-router",
     "require": {
-        "lumenpress/nimble": "dev-master"
+        "lumenpress/nimble": "~0.1"
     },
     "autoload": {
         "psr-4": {
