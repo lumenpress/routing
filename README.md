@@ -26,7 +26,7 @@ $router = app('wp.router');
 Or use the router service container as a facade.
 
 ```php
-use LumenPress\WordPressRouter\Facade\Route;
+use LumenPress\WordPressRouter\Facades\Route;
 ```
 
 ### Routing
@@ -51,7 +51,7 @@ $router->group([
 As a facade.
 
 ```php
-use LumenPress\WordPressRouter\Facade\Route;
+use LumenPress\WordPressRouter\Facades\Route;
 
 Route::is($condition, $callback);
 Route::get($condition, $callback);
