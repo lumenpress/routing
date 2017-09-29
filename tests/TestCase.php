@@ -18,6 +18,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         $app->withEloquent();
         $app->register(ServiceProvider::class);
 
+        if (! property_exists($app, 'router')) {
+            $app->router = $app;
+        }
+
         return $app;
     }
 
@@ -25,5 +29,10 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->setWpQueryVars($uri = str_replace(home_url(), '', $uri));
         return $app->handle(Request::create($uri, $method));
+    }
+
+    public function callPostUrl($app, $post)
+    {
+        return $this->call($app, get_permalink($post));
     }
 }
