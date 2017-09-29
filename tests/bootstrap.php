@@ -4,7 +4,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 
 define('WP_TESTS_CONFIG_FILE_PATH', __DIR__.'/wp-tests-config.php');
 
-require realpath(dirname(PHPUNIT_COMPOSER_INSTALL).'/lumenpress/testing/includes/bootstrap.php');
+require realpath(dirname(PHPUNIT_COMPOSER_INSTALL).'/lumenpress/testing/tests/includes/bootstrap.php');
 
 putenv('APP_DEBUG='.(WP_DEBUG?'true':'false'));
 putenv('DB_CONNECTION=mysql');
