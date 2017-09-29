@@ -10,7 +10,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->app->singleton('wp.router', function ($app) {
-            return new Router($app, config('routes.conditions'));
+            return new Router($app, config('routes.conditions', []));
         });
 
         if ($this->isLumen()) {

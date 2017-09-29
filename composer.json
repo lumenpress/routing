@@ -3,9 +3,21 @@
     "require": {
         "lumenpress/nimble": "~0.1"
     },
+    "require-dev": {
+        "johnpbloch/wordpress-core": "^4.8",
+        "phpunit/phpunit": "~5.0",
+        "laravel/lumen-framework": "5.4.*",
+        "kint-php/kint": "^2.2",
+        "lumenpress/testing": "^0.1.1"
+    },
     "autoload": {
         "psr-4": {
             "LumenPress\\Routing\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LumenPress\\Routing\\Tests\\": "tests"
         }
     }
 }
