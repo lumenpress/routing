@@ -1,6 +1,6 @@
 # WordPress Routing
 
-> WordPress Routing for Laravel & Lumen
+The routing needs to be used with [lumenpress/laravel](https://github.com/lumenpress/laravel) or [lumenpress/lumen](https://github.com/lumenpress/lumen).
 
 ## Installation
 
