@@ -1,6 +1,6 @@
 <?php 
 
-namespace LumenPress\WordPressRouter\Facades;
+namespace LumenPress\Routing\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

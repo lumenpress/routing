@@ -1,16 +1,17 @@
+# WordPress Routing
 
-# WordPress Router
+> WordPress Routing for Laravel & Lumen
 
 ## Installation
 
 ```bash
-composer require lumenpress/wp-router
+composer require lumenpress/routing
 ```
 
 Register the provider in `bootstrap/app.php`:
 
 ```php
-$app->register(LumenPress\WordPressRouter\ServiceProvider::class);
+$app->register(LumenPress\Routing\ServiceProvider::class);
 ```
 
 It should be noted that Laravel must also be registered in the `bootstrap/app.php` file, otherwise it will not work properly.
@@ -26,7 +27,7 @@ $router = app('wp.router');
 Or use the router service container as a facade.
 
 ```php
-use LumenPress\WordPressRouter\Facades\Route;
+use LumenPress\Routing\Facades\Route;
 ```
 
 ### Routing
@@ -51,7 +52,7 @@ $router->group([
 As a facade.
 
 ```php
-use LumenPress\WordPressRouter\Facades\Route;
+use LumenPress\Routing\Facades\Route;
 
 Route::is($condition, $callback);
 Route::get($condition, $callback);

@@ -1,20 +1,16 @@
 <?php
 
-namespace LumenPress\WordPressRouter;
+namespace LumenPress\Routing;
 
-use LumenPress\WordPressRouter\Laravel\Router as LaravelRouter;
-use LumenPress\WordPressRouter\Lumen\GroupCountBasedDispatcher;
+use LumenPress\Routing\Laravel\Router as LaravelRouter;
+use LumenPress\Routing\Lumen\GroupCountBasedDispatcher;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('wp.router.conditions', function ($app) {
-            return config('wp/route-conditions');
-        });
-
         $this->app->singleton('wp.router', function ($app) {
-            return new Router($app);
+            return new Router($app, config('routes.conditions'));
         });
 
         if ($this->isLumen()) {

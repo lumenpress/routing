@@ -1,6 +1,6 @@
 <?php
 
-namespace LumenPress\WordPressRouter\Laravel;
+namespace LumenPress\Routing\Laravel;
 
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;

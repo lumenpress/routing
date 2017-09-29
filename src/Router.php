@@ -1,6 +1,6 @@
 <?php
 
-namespace LumenPress\WordPressRouter;
+namespace LumenPress\Routing;
 
 use Illuminate\Support\Arr;
 use LumenPress\Nimble\Models\Post;
@@ -35,7 +35,9 @@ class Router
      *
      * @var array
      */
-    protected $routeConditions = [];
+    protected $routeConditions = [
+        'template' => 'page_template',
+    ];
 
     /**
      * All of the named routes and URI pairs.
@@ -49,10 +51,10 @@ class Router
      *
      * @param  \Laravel\Lumen\Application  $app
      */
-    public function __construct($app)
+    public function __construct($app, array $routeConditions = [])
     {
         $this->app = $app;
-        $this->routeConditions = $app->bound('wp.router.conditions') ? $app['wp.router.conditions'] : [];
+        $this->routeConditions = array_merge($this->routeConditions, $routeConditions);
     }
 
     /**
@@ -204,18 +206,8 @@ class Router
         }
 
         if (isset($attributes) && is_array($attributes)) {
-            // if (isset($attributes['prefix'])) {
-            //     $uri = trim($attributes['prefix'], '/').'/'.trim($uri, '/');
-            // }
-
-            // if (isset($attributes['suffix'])) {
-            //     $uri = trim($uri, '/').rtrim($attributes['suffix'], '/');
-            // }
-
             $action = $this->mergeGroupAttributes($action, $attributes);
         }
-
-        // $uri = '/'.trim($uri, '/');
 
         // if (isset($action['as'])) {
         //     $this->namedRoutes[$action['as']] = $uri;
