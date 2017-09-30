@@ -2,8 +2,6 @@
 
 namespace LumenPress\Routing\Tests;
 
-use LumenPress\Nimble\Models\Page;
-
 class ArchiveTest extends TestCase
 {
     protected function registerPostType()
