@@ -230,7 +230,7 @@ class Router
     {
         if (is_string($condition)) {
             return [[
-                'callback' => $this->parseConditionKey($condition), 
+                'callback' => $this->parseConditionKey($condition),
                 'parameters' => [[]],
             ]];
         }
@@ -243,6 +243,7 @@ class Router
                     'parameters' => $this->parseConditionParameters($value),
                 ];
             }
+
             return $newCondition;
         }
 
@@ -270,7 +271,7 @@ class Router
             return [[$parameters]];
         }
 
-        return array_map(function($parameter) {
+        return array_map(function ($parameter) {
             return is_array($parameter) ? $parameter : [$parameter];
         }, $parameters);
     }
