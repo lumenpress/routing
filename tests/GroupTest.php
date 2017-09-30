@@ -14,9 +14,9 @@ class GroupTest extends TestCase
         $app = $this->createApplication();
 
         $app['wp.router']->group([
-            'namespace' => 'LumenPress\Routing\Tests\Controllers'], function ($router) {
-            $router->is('home', 'TestController@home');
-        });
+            'namespace' => 'LumenPress\Routing\Tests\Controllers', ], function ($router) {
+                $router->is('home', 'TestController@home');
+            });
 
         $response = $this->call($app, '/');
 
@@ -37,9 +37,9 @@ class GroupTest extends TestCase
 
         $app['wp.router']->group([
             'namespace' => 'LumenPress\Routing\Tests\Controllers',
-            'middleware' => 'auth'], function ($router) {
+            'middleware' => 'auth', ], function ($router) {
                 $router->is('home', 'TestController@home');
-        });
+            });
 
         $response = $this->call($app, '/');
 
@@ -64,8 +64,8 @@ class GroupTest extends TestCase
         ]);
 
         $app['wp.router']->is('home', [
-            'middleware' => 'auth', 
-            'uses' => 'LumenPress\Routing\Tests\Controllers\TestController@home'
+            'middleware' => 'auth',
+            'uses' => 'LumenPress\Routing\Tests\Controllers\TestController@home',
         ]);
 
         $response = $this->call($app, '/');
