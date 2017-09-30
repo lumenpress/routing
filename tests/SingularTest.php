@@ -7,8 +7,8 @@ use LumenPress\Nimble\Models\Post;
 class SingularTest extends TestCase
 {
     /**
-     * is_singular()
-     * 
+     * is_singular().
+     *
      * @group singular
      */
     public function testRoute()
@@ -34,8 +34,8 @@ class SingularTest extends TestCase
     }
 
     /**
-     * is_singular()
-     * 
+     * is_singular().
+     *
      * @group singular
      */
     public function testRoute2()
@@ -46,6 +46,7 @@ class SingularTest extends TestCase
 
         $app['wp.router']->is('singular', function ($post) use ($tester) {
             $tester->assertInstanceOf(Post::class, $post);
+
             return $post->id;
         });
 

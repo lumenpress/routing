@@ -41,6 +41,7 @@ class PageTest extends TestCase
 
         $app['wp.router']->is('page', function ($post) use ($tester) {
             $tester->assertInstanceOf(Page::class, $post);
+
             return $post->id;
         });
 
@@ -87,7 +88,6 @@ class PageTest extends TestCase
         $response = $this->callPostUrl($app, $id);
         $this->assertResponse($response, $id);
     }
-
 
     public function testRoute5()
     {
@@ -156,9 +156,9 @@ class PageTest extends TestCase
     public function testRoute7()
     {
         $ids = [];
-        $titles[] = 'Page ' . uniqid();
-        $titles[] = 'Page ' . uniqid();
-        $titles[] = 'Page ' . uniqid();
+        $titles[] = 'Page '.uniqid();
+        $titles[] = 'Page '.uniqid();
+        $titles[] = 'Page '.uniqid();
 
         foreach ($titles as $title) {
             $ids[] = wp_insert_post([

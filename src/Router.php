@@ -502,7 +502,7 @@ class Router
         return [];
     }
 
-    public function addRouteCondition($key , callable $callback = null)
+    public function addRouteCondition($key, callable $callback = null)
     {
         if (is_array($key)) {
             $this->routeConditions = array_merge($this->routeConditions, $key);

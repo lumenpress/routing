@@ -39,6 +39,7 @@ class FrontPageTest extends TestCase
 
         $app['wp.router']->is('front', function ($post) use ($tester) {
             $tester->assertInstanceOf(Page::class, $post);
+
             return $post->id;
         });
 

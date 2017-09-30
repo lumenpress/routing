@@ -47,7 +47,7 @@ class TemplateTest extends TestCase
                 'post_status'   => 'publish',
                 'post_type'     => $postType,
                 'meta_input'    => [
-                    '_wp_page_template' => 'home'
+                    '_wp_page_template' => 'home',
                 ],
             ]);
 
@@ -66,35 +66,35 @@ class TemplateTest extends TestCase
 
         $posts = [
             [
-                'post_title'    => "test singular route 4.1",
+                'post_title'    => 'test singular route 4.1',
                 'post_status'   => 'publish',
                 'post_type'     => 'page',
                 'meta_input'    => [
-                    '_wp_page_template' => 'about'
+                    '_wp_page_template' => 'about',
                 ],
             ],
             [
-                'post_title'    => "test singular route 4.2",
+                'post_title'    => 'test singular route 4.2',
                 'post_status'   => 'publish',
                 'post_type'     => 'post',
                 'meta_input'    => [
-                    '_wp_page_template' => 'about'
+                    '_wp_page_template' => 'about',
                 ],
             ],
             [
-                'post_title'    => "test singular route 4.3",
+                'post_title'    => 'test singular route 4.3',
                 'post_status'   => 'publish',
                 'post_type'     => 'page',
                 'meta_input'    => [
-                    '_wp_page_template' => 'contact'
+                    '_wp_page_template' => 'contact',
                 ],
             ],
             [
-                'post_title'    => "test singular route 4.4",
+                'post_title'    => 'test singular route 4.4',
                 'post_status'   => 'publish',
                 'post_type'     => 'post',
                 'meta_input'    => [
-                    '_wp_page_template' => 'contact'
+                    '_wp_page_template' => 'contact',
                 ],
             ],
         ];
