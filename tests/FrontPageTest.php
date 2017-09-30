@@ -47,5 +47,7 @@ class FrontPageTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals($id, $response->getContent());
+
+        update_option('show_on_front', 'posts');
     }
 }

@@ -55,6 +55,7 @@ class Router
         $this->addRouteCondition('front', 'is_front_page');
         $this->addRouteCondition('template', 'is_page_template');
         $this->addRouteCondition('page', [$this, 'pageCondition']);
+        $this->addRouteCondition('archive', [$this, 'archiveCondition']);
     }
 
     /**
@@ -481,22 +482,29 @@ class Router
     public function getQueriedVars()
     {
         $obj = get_queried_object();
+
         if ($obj instanceof \WP_Post) {
             $class = Post::getClassNameByType($obj->post_type, Post::class);
             $post = $class::find($obj->ID);
 
             return ['post' => $post];
         }
+
         if ($obj instanceof \WP_Term) {
             $class = Taxonomy::getClassNameByType($obj->taxonomy, Taxonomy::class);
             $term = $class::find($obj->term_id);
 
             return ['term' => $term];
         }
+
         if ($obj instanceof \WP_User) {
             $user = User::find($obj->ID);
 
             return ['user' => $user];
+        }
+
+        if ($obj) {
+            return [$obj];
         }
 
         return [];
@@ -511,6 +519,15 @@ class Router
         }
 
         return $this;
+    }
+
+    protected function archiveCondition($postType = '')
+    {
+        if (empty($postType)) {
+            return is_archive();
+        }
+
+        return is_post_type_archive($postType);
     }
 
     protected function pageCondition($page = '')
