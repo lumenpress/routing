@@ -54,8 +54,9 @@ class Router
         $this->app = $app;
         $this->addRouteCondition('front', 'is_front_page');
         $this->addRouteCondition('template', 'is_page_template');
-        $this->addRouteCondition('page', [$this, 'pageCondition']);
-        $this->addRouteCondition('archive', [$this, 'archiveCondition']);
+        $this->addRouteCondition('page', [$this, 'pageRouteCondition']);
+        $this->addRouteCondition('single', [$this, 'singleRouteCondition']);
+        $this->addRouteCondition('archive', [$this, 'archiveRouteCondition']);
     }
 
     /**
@@ -196,9 +197,11 @@ class Router
      * @param  mixed  $action
      * @return void
      */
-    public function addRoute($method, $args, $action)
+    public function addRoute($method, $condition, $action)
     {
         $action = $this->parseAction($action);
+
+        $condition = $this->parseCondition($condition);
 
         $attributes = null;
 
@@ -216,11 +219,60 @@ class Router
 
         if (is_array($method)) {
             foreach ($method as $verb) {
-                $this->routes[$verb][] = ['args' => $args, 'action' => $action];
+                $this->routes[$verb][] = ['condition' => $condition, 'action' => $action];
             }
         } else {
-            $this->routes[$method][] = ['args' => $args, 'action' => $action];
+            $this->routes[$method][] = ['condition' => $condition, 'action' => $action];
         }
+    }
+
+    protected function parseCondition($condition)
+    {
+        if (is_string($condition)) {
+            return [[
+                'callback' => $this->parseConditionKey($condition), 
+                'parameters' => [[]],
+            ]];
+        }
+
+        if (is_array($condition)) {
+            $newCondition = [];
+            foreach ($condition as $key => $value) {
+                $newCondition[] = [
+                    'callback' => $this->parseConditionKey($key),
+                    'parameters' => $this->parseConditionParameters($value),
+                ];
+            }
+            return $newCondition;
+        }
+
+        return [];
+    }
+
+    protected function parseConditionKey($key)
+    {
+        if (isset($this->routeConditions[$key])) {
+            $condition = $this->routeConditions[$key];
+        } else {
+            $condition = "is_{$key}";
+        }
+
+        if (! is_callable($condition)) {
+            throw new \Exception("$key condition does not exists.", 1);
+        }
+
+        return $condition;
+    }
+
+    protected function parseConditionParameters($parameters)
+    {
+        if (! is_array($parameters)) {
+            return [[$parameters]];
+        }
+
+        return array_map(function($parameter) {
+            return is_array($parameter) ? $parameter : [$parameter];
+        }, $parameters);
     }
 
     /**
@@ -441,35 +493,9 @@ class Router
         $routes = $this->routes[$httpMethod];
 
         foreach ($routes as $route) {
-            if (! is_array($route['args'])) {
-                $route['args'] = [$route['args'] => []];
-            }
-
-            foreach ($route['args'] as $key => $values) {
-                if (isset($this->routeConditions[$key])) {
-                    $key = $this->routeConditions[$key];
-                } else {
-                    $key = "is_{$key}";
-                }
-
-                if (! is_callable($key)) {
-                    continue;
-                }
-
-                if (! is_array($values)) {
-                    $values = [$values];
-                }
-
-                $values = array_map(function ($value) {
-                    return is_array($value) ? $value : [$value];
-                }, $values);
-
-                if (empty($values)) {
-                    $values = [[]];
-                }
-
-                foreach ($values as $value) {
-                    if (call_user_func_array($key, $value)) {
+            foreach ($route['condition'] as $condition) {
+                foreach ($condition['parameters'] as $parameters) {
+                    if (call_user_func_array($condition['callback'], $parameters)) {
                         return [1, $route['action'], $this->getQueriedVars()];
                     }
                 }
@@ -521,7 +547,7 @@ class Router
         return $this;
     }
 
-    protected function archiveCondition($postType = '')
+    protected function archiveRouteCondition($postType = '')
     {
         if (empty($postType)) {
             return is_archive();
@@ -530,7 +556,7 @@ class Router
         return is_post_type_archive($postType);
     }
 
-    protected function pageCondition($page = '')
+    protected function pageRouteCondition($page = '')
     {
         if (! is_page($page)) {
             return false;
@@ -541,5 +567,22 @@ class Router
         }
 
         return true;
+    }
+
+    protected function singleRouteCondition($type = '', $slug = '')
+    {
+        if (is_numeric($type)) {
+            return is_single($type);
+        }
+
+        if (! is_singular($type)) {
+            return false;
+        }
+
+        if (empty($slug)) {
+            return true;
+        }
+
+        return is_single($slug);
     }
 }

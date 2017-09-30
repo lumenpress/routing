@@ -79,34 +79,6 @@ Route::is(string $condition, $callback);
 Route::is([$condition => int|string|array $args], $callback);
 ```
 
-### singular
-
-Query Condition
-
-| function | theme file |
-|--|--|
-| is_singular() | singular.php |
-| is_singular($postType) | single-`$postType`.php |
-
-Route Condition
-
-- `singular`
-- `['singular' => string|array $postType]`
-
-Callback Arguments
-
-- `LumenPress\Nimble\Models\Post $post` `optional`;
-
-```php
-Route::is('singular', function (LumenPress\Nimble\Models\Page $post) {});
-
-// Single
-Route::is(['singular' => 'book'], $callback);
-
-// Multiple
-Route::is(['singular' => ['newspaper', 'book']], $callback);
-```
-
 ### template
 
 Query Condition
@@ -125,6 +97,7 @@ Callback Arguments
 
 ```php
 Route::is(['template' => 'home'], function (LumenPress\Nimble\Models\Post $post) {});
+
 // Multiple
 Route::is(['template' => 'contact', 'about'], $callback);
 ```
@@ -149,20 +122,21 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Page $page` `optional`;
 
 ```php
+// page.php
 Route::is('page', function (LumenPress\Nimble\Models\Page $page) {});
 
-// By id
+// page-2.php
 Route::is(['page' => 2], $callback);
 
-// By slug
+// page-sample-page.php
 Route::is(['page' => 'sample-page'], $callback);
+
+// page-about.php or page-contact.php
+Route::is(['page' => ['about', 'contact']], $callback);
 
 // By path
 Route::is(['page' => 'about/company'], $callback);
 Route::is(['page' => 'about/staff'], $callback);
-
-// Multiple
-Route::is(['page' => ['about', 'contact']], $callback);
 ```
 
 ### single
@@ -172,6 +146,7 @@ Query Condition
 | function | theme file |
 |--|--|
 | is_single() | single.php |
+| is_single($id) | single-`$id`.php |
 | is_single($id) | single-`$id`.php |
 
 Route Condition
@@ -184,16 +159,60 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Post $post` `optional`;
 
 ```php
+// single.php
 Route::is('single', function (LumenPress\Nimble\Models\Post $post) {});
 
-// By id
+// query by post id
 Route::is(['single' => 1], $callback);
 
-// By slug
-Route::is(['single' => 'hello-world'], $callback);
+// single-book.php
+Route::is(['single' => 'book'], $callback);
 
-// Multiple
-Route::is(['single' => ['foo', 'bar']], $callback);
+// single-book.php or single-newspaper.php
+Route::is(['single' => ['book', 'newspaper']], $callback);
+
+// single-book-foo.php 
+// or single-book-bar.php 
+// or single-newspaper-foo.php 
+// or single-newspaper-bar.php
+Route::is([
+    'single' => [
+        // $post_type,  $slug
+        ['book',        'foo'],
+        ['book',        'bar'],
+        ['newspaper',   'foo'],
+        ['newspaper',   'bar'],
+    ]
+], $callback);
+```
+
+### singular
+
+Query Condition
+
+| function | theme file |
+|--|--|
+| is_singular() | singular.php |
+| is_singular($postType) | single-`$postType`.php |
+
+Route Condition
+
+- `singular`
+- `['singular' => string|array $postType]`
+
+Callback Arguments
+
+- `LumenPress\Nimble\Models\Post $post` `optional`;
+
+```php
+// singular.php
+Route::is('singular', function (LumenPress\Nimble\Models\Page $post) {});
+
+// single-book.php
+Route::is(['singular' => 'book'], $callback);
+
+// single-book.php or single-newspaper.php
+Route::is(['singular' => ['newspaper', 'book']], $callback);
 ```
 
 ### attachment
@@ -287,6 +306,7 @@ Route::is('tax', function ($taxonomy) {});
 
 Route::is(['tax' => 'channel'], $callback);
 // Multiple
+Route::is(['tax' => ['channel' => 'BBC1']], $callback);
 Route::is(['tax' => [['channel', 'BBC1']]], $callback);
 ```
 
