@@ -12,7 +12,7 @@ class TaxonomyTest extends TestCase
             'label'        => 'Genre',
             'public'       => true,
             'rewrite'      => ['slug' => 'genre'],
-            'hierarchical' => true
+            'hierarchical' => true,
         ]);
 
         flush_rewrite_rules();
@@ -74,7 +74,7 @@ class TaxonomyTest extends TestCase
         $app = $this->createApplication();
 
         $taxonomies = [
-            ['genre', $t->slug]
+            ['genre', $t->slug],
         ];
 
         $app['wp.router']->is(['tax' => $taxonomies], function () {
