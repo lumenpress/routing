@@ -175,15 +175,14 @@ Route::is(['single' => ['book', 'newspaper']], $callback);
 // or single-book-bar.php 
 // or single-newspaper-foo.php 
 // or single-newspaper-bar.php
-Route::is([
-    'single' => [
-        // $post_type,  $slug
-        ['book',        'foo'],
-        ['book',        'bar'],
-        ['newspaper',   'foo'],
-        ['newspaper',   'bar'],
-    ]
-], $callback);
+$single = [
+    // $post_type,  $slug
+    ['book',        'foo'],
+    ['book',        'bar'],
+    ['newspaper',   'foo'],
+    ['newspaper',   'bar'],
+];
+Route::is(['single' => $single], $callback);
 ```
 
 ### singular
