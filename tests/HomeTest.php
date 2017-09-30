@@ -7,6 +7,7 @@ class HomeTest extends TestCase
     public function testRoute()
     {
         $this->setPermalinkStructure('/%year%/%monthnum%/%day%/%postname%/');
+        update_option('show_on_front', 'posts');
 
         $app = $this->createApplication();
 

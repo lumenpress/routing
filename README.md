@@ -157,6 +157,10 @@ Route::is(['page' => 2], $callback);
 // By slug
 Route::is(['page' => 'sample-page'], $callback);
 
+// By path
+Route::is(['page' => 'about/company'], $callback);
+Route::is(['page' => 'about/staff'], $callback);
+
 // Multiple
 Route::is(['page' => ['about', 'contact']], $callback);
 ```
@@ -411,7 +415,7 @@ Route Condition
 Route::is('home', $callback);
 ```
 
-### front_page
+### front
 
 Query Condition
 
@@ -421,10 +425,10 @@ Query Condition
 
 Route Condition
 
-- `front_page`
+- `front`
 
 ```php
-Route::is('front_page', $callback);
+Route::is('front', $callback);
 ```
 
 ### search

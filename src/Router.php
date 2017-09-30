@@ -31,13 +31,11 @@ class Router
     protected $routes = [];
 
     /**
-     * route conditions.
+     * Route conditions.
      *
      * @var array
      */
-    protected $routeConditions = [
-        'template' => 'page_template',
-    ];
+    protected $routeConditions = [];
 
     /**
      * All of the named routes and URI pairs.
@@ -51,10 +49,12 @@ class Router
      *
      * @param  \Laravel\Lumen\Application  $app
      */
-    public function __construct($app, array $routeConditions = [])
+    public function __construct($app)
     {
         $this->app = $app;
-        $this->routeConditions = array_merge($this->routeConditions, $routeConditions);
+        $this->addRouteCondition('front', 'is_front_page');
+        $this->addRouteCondition('template', 'is_page_template');
+        $this->addRouteCondition('page', [$this, 'pageCondition']);
     }
 
     /**
@@ -445,7 +445,13 @@ class Router
             }
 
             foreach ($route['args'] as $key => $values) {
-                if (! is_callable("is_{$key}")) {
+                if (isset($this->routeConditions[$key])) {
+                    $key = $this->routeConditions[$key];
+                } else {
+                    $key = "is_{$key}";
+                }
+
+                if (! is_callable($key)) {
                     continue;
                 }
 
@@ -462,7 +468,7 @@ class Router
                 }
 
                 foreach ($values as $value) {
-                    if (call_user_func_array("is_{$key}", $value)) {
+                    if (call_user_func_array($key, $value)) {
                         return [1, $route['action'], $this->getQueriedVars()];
                     }
                 }
@@ -494,5 +500,29 @@ class Router
         }
 
         return [];
+    }
+
+    public function addRouteCondition($key , callable $callback = null)
+    {
+        if (is_array($key)) {
+            $this->routeConditions = array_merge($this->routeConditions, $key);
+        } elseif (is_string($key) && ! empty($key)) {
+            $this->routeConditions[$key] = $callback;
+        }
+
+        return $this;
+    }
+
+    protected function pageCondition($page = '')
+    {
+        if (! is_page($page)) {
+            return false;
+        }
+
+        if (is_string($page) && get_queried_object()->post_parent !== 0) {
+            return stripos($page, '/') !== false;
+        }
+
+        return true;
     }
 }

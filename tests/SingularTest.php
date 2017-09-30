@@ -6,6 +6,11 @@ use LumenPress\Nimble\Models\Post;
 
 class SingularTest extends TestCase
 {
+    /**
+     * is_singular()
+     * 
+     * @group singular
+     */
     public function testRoute()
     {
         $this->setPermalinkStructure('/%year%/%monthnum%/%day%/%postname%/');
@@ -28,26 +33,32 @@ class SingularTest extends TestCase
         $this->assertEquals('test singular route', $response->getContent());
     }
 
+    /**
+     * is_singular()
+     * 
+     * @group singular
+     */
     public function testRoute2()
     {
         $app = $this->createApplication();
 
-        $app['wp.router']->is('singular', function ($post) {
-            return get_class($post);
+        $tester = $this;
+
+        $app['wp.router']->is('singular', function ($post) use ($tester) {
+            $tester->assertInstanceOf(Post::class, $post);
+            return $post->id;
         });
 
         $id = wp_insert_post([
             'post_title'    => 'test singular route 2',
             'post_status'   => 'publish',
-            'post_type'     => 'page',
+            'post_type'     => 'post',
         ]);
 
-        $post = get_post($id);
-
-        $response = $this->callPostUrl($app, $post);
+        $response = $this->callPostUrl($app, $id);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals(Post::getClassNameByType($post->post_type, Post::class), $response->getContent());
+        $this->assertEquals($id, $response->getContent());
     }
 
     public function testRoute3()
@@ -121,5 +132,69 @@ class SingularTest extends TestCase
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('test singular route 5.2', $response->getContent());
+    }
+
+    public function testRoute6()
+    {
+        register_post_type('book', [
+            'label'              => 'Book',
+            'public'             => true,
+            'publicly_queryable' => true,
+            'show_ui'            => true,
+            'show_in_menu'       => true,
+            'query_var'          => true,
+            'rewrite'            => ['slug' => 'book'],
+            'capability_type'    => 'post',
+            'has_archive'        => true,
+            'hierarchical'       => false,
+            'menu_position'      => null,
+            'supports'           => ['title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'],
+        ]);
+
+        flush_rewrite_rules();
+
+        $id = wp_insert_post([
+            'post_title'    => 'test singular route 6',
+            'post_status'   => 'publish',
+            'post_type'     => 'book',
+        ]);
+
+        $app = $this->createApplication();
+
+        $app['wp.router']->is(['singular' => 'book'], function ($post) {
+            return 'is book post type';
+        });
+
+        $response = $this->callPostUrl($app, $id);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('is book post type', $response->getContent());
+    }
+
+    public function testRoute7()
+    {
+        $app = $this->createApplication();
+
+        $app['wp.router']->is(['singular' => ['page', 'post']], function ($post) {
+            return 'test singular route 7';
+        });
+
+        $id = wp_insert_post([
+            'post_title'    => 'test singular route 7.1',
+            'post_status'   => 'publish',
+            'post_type'     => 'page',
+        ]);
+
+        $response = $this->callPostUrl($app, $id);
+        $this->assertResponse($response, 'test singular route 7');
+
+        $id = wp_insert_post([
+            'post_title'    => 'test singular route 7.2',
+            'post_status'   => 'publish',
+            'post_type'     => 'post',
+        ]);
+
+        $response = $this->callPostUrl($app, $id);
+        $this->assertResponse($response, 'test singular route 7');
     }
 }
