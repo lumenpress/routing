@@ -3,7 +3,6 @@
 namespace LumenPress\Routing\Tests;
 
 use LumenPress\Nimble\Models\Page;
-use LumenPress\Nimble\Models\Model;
 
 class PageTest extends TestCase
 {
