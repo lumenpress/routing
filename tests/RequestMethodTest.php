@@ -2,8 +2,6 @@
 
 namespace LumenPress\Routing\Tests;
 
-use LumenPress\Routing\Exceptions\RouteConditionException;
-
 class RequestMethodTest extends TestCase
 {
     protected function createApplication()
