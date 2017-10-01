@@ -75,7 +75,7 @@ class AuthorTest extends TestCase
     {
         $app = $this->createApplication();
 
-        $app['wp.router']->addRouteCondition('author.role', function ($role) {
+        $app['wp.router']->registerCondition('author.role', function ($role) {
             if (! is_author()) {
                 return false;
             }

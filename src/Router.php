@@ -53,11 +53,13 @@ class Router
     public function __construct($app)
     {
         $this->app = $app;
-        $this->addRouteCondition('front', 'is_front_page');
-        $this->addRouteCondition('template', 'is_page_template');
-        $this->addRouteCondition('page', [$this, 'pageRouteCondition']);
-        $this->addRouteCondition('single', [$this, 'singleRouteCondition']);
-        $this->addRouteCondition('archive', [$this, 'archiveRouteCondition']);
+        $this->registerCondition([
+            'front'     => 'is_front_page',
+            'template'  => 'is_page_template',
+            'page'      => [$this, 'pageRouteCondition'],
+            'single'    => [$this, 'singleRouteCondition'],
+            'archive'   => [$this, 'archiveRouteCondition'],
+        ]);
     }
 
     /**
@@ -538,17 +540,6 @@ class Router
         return [];
     }
 
-    public function addRouteCondition($key, callable $callback = null)
-    {
-        if (is_array($key)) {
-            $this->routeConditions = array_merge($this->routeConditions, $key);
-        } elseif (is_string($key) && ! empty($key)) {
-            $this->routeConditions[$key] = $callback;
-        }
-
-        return $this;
-    }
-
     protected function archiveRouteCondition($postType = '')
     {
         if (empty($postType)) {
@@ -586,5 +577,16 @@ class Router
         }
 
         return is_single($slug);
+    }
+
+    public function registerCondition($key, callable $callback = null)
+    {
+        if (is_array($key)) {
+            $this->routeConditions = array_merge($this->routeConditions, $key);
+        } elseif (is_string($key) && ! empty($key)) {
+            $this->routeConditions[$key] = $callback;
+        }
+
+        return $this;
     }
 }

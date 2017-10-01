@@ -534,7 +534,7 @@ Route::is('404', $callback);
 ## Custom Route Condition
 
 ```php
-Route::addRouteCondition('author.role', function ($role) {
+Route::registerCondition('author.role', function ($role) {
     if (! is_author()) {
         return false;
     }
