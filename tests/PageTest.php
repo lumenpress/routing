@@ -3,9 +3,13 @@
 namespace LumenPress\Routing\Tests;
 
 use LumenPress\Nimble\Models\Page;
+use LumenPress\Nimble\Models\Model;
 
 class PageTest extends TestCase
 {
+    /**
+     * @group page
+     */
     public function testRoute()
     {
         $text = 'test page route';
@@ -33,6 +37,9 @@ class PageTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
     }
 
+    /**
+     * @group page
+     */
     public function testRoute2()
     {
         $app = $this->createApplication();
@@ -55,6 +62,9 @@ class PageTest extends TestCase
         $this->assertResponse($response, $id);
     }
 
+    /**
+     * @group page
+     */
     public function testRoute3()
     {
         $id = wp_insert_post([
@@ -72,6 +82,9 @@ class PageTest extends TestCase
         $this->assertResponse($response, $id);
     }
 
+    /**
+     * @group page
+     */
     public function testRoute4()
     {
         $id = wp_insert_post([
@@ -89,6 +102,9 @@ class PageTest extends TestCase
         $this->assertResponse($response, $id);
     }
 
+    /**
+     * @group page
+     */
     public function testRoute5()
     {
         $id2 = wp_insert_post([
@@ -123,6 +139,9 @@ class PageTest extends TestCase
         $this->assertResponse($response, $id2);
     }
 
+    /**
+     * @group page
+     */
     public function testRoute6()
     {
         $id2 = wp_insert_post([
@@ -153,6 +172,9 @@ class PageTest extends TestCase
         $this->assertResponse($response, $id1);
     }
 
+    /**
+     * @group page
+     */
     public function testRoute7()
     {
         $ids = [];

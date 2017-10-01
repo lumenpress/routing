@@ -1,5 +1,13 @@
 <?php
 
+require_once __DIR__.'/../vendor/autoload.php';
+
+try {
+    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+} catch (Dotenv\Exception\InvalidPathException $e) {
+    //
+}
+
 /* Path to the WordPress codebase you'd like to test. Add a forward slash in the end. */
 define('ABSPATH', __DIR__.'/../vendor/johnpbloch/wordpress-core/');
 
@@ -31,14 +39,15 @@ define('WP_DEBUG', true);
 // These tests will DROP ALL TABLES in the database with the prefix named below.
 // DO NOT use a production database or one that is shared with something else.
 
-define('DB_NAME', 'wordpress');
-define('DB_USER', 'root');
-define('DB_PASSWORD', 'example');
-define('DB_HOST', 'mysql');
+define('DB_NAME', env('DB_NAME', 'wordpress'));
+define('DB_USER', env('DB_USER', 'root'));
+define('DB_PASSWORD', env('DB_PASSWORD', ''));
+define('DB_HOST', env('DB_HOST', 'localhost'));
 define('DB_CHARSET', 'utf8');
 define('DB_COLLATE', '');
 
-$table_prefix = 'wptests_';   // Only numbers, letters, and underscores please!
+// Only numbers, letters, and underscores please!
+$table_prefix = env('DB_PREFIX', 'wptests_');
 
 define('WP_TESTS_DOMAIN', 'example.org');
 define('WP_TESTS_EMAIL', 'admin@example.org');

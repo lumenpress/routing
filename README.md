@@ -1,5 +1,7 @@
 # WordPress Routing
 
+[![Total Downloads](https://poser.pugx.org/lumenpress/routing/downloads)](https://packagist.org/packages/lumenpress/routing) [![Latest Stable Version](https://poser.pugx.org/lumenpress/routing/v/stable)](https://packagist.org/packages/lumenpress/routing)
+
 The routing needs to be used with [lumenpress/laravel](https://github.com/lumenpress/laravel) or [lumenpress/lumen](https://github.com/lumenpress/lumen).
 
 ## Installation

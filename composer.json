@@ -8,7 +8,8 @@
         "phpunit/phpunit": "~5.0",
         "laravel/lumen-framework": "5.4.*",
         "kint-php/kint": "^2.2",
-        "lumenpress/testing": "^0.1.1"
+        "lumenpress/testing": "^0.1.1",
+        "vlucas/phpdotenv": "^2.4"
     },
     "autoload": {
         "psr-4": {
