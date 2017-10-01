@@ -32,19 +32,19 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         return $app->handle(Request::create($uri, $method));
     }
 
-    public function callPostUrl($app, $post)
+    public function callPostUrl($app, $post, $method = 'GET')
     {
-        return $this->call($app, get_permalink($post));
+        return $this->call($app, get_permalink($post), $method);
     }
 
-    public function callTaxonomyUrl($app, $id, $taxonomy)
+    public function callTaxonomyUrl($app, $id, $taxonomy, $method = 'GET')
     {
-        return $this->call($app, get_term_link($id, $taxonomy));
+        return $this->call($app, get_term_link($id, $taxonomy), $method);
     }
 
-    public function callAuthorUrl($app, $authorId)
+    public function callAuthorUrl($app, $authorId, $method = 'GET')
     {
-        return $this->call($app, get_author_posts_url($authorId));
+        return $this->call($app, get_author_posts_url($authorId), $method);
     }
 
     public static function assertResponse($response, $content, $status = 200)

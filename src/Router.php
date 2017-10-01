@@ -196,7 +196,7 @@ class Router
      * Add a route to the collection.
      *
      * @param  array|string  $method
-     * @param  string  $uri
+     * @param  string  $condition
      * @param  mixed  $action
      * @return void
      */
@@ -387,11 +387,44 @@ class Router
         return $action;
     }
 
+    /**
+     * Register a route with the application.
+     *
+     * @param  string  $uri
+     * @param  mixed  $action
+     * @return $this
+     */
+    public function match($methods, $uri, $action = null)
+    {
+        $this->addRoute(array_map('strtoupper', (array) $methods), $uri, $action);
+
+        return $this;
+    }
+
+    /**
+     * Register a route with the application.
+     *
+     * @param  string  $uri
+     * @param  mixed  $action
+     * @return $this
+     */
     public function is($uri, $action)
     {
         $this->addRoute(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], $uri, $action);
 
         return $this;
+    }
+
+    /**
+     * Register a route with the application.
+     *
+     * @param  string  $uri
+     * @param  mixed  $action
+     * @return $this
+     */
+    public function any($uri, $action)
+    {
+        return $this->is($uri, $action);
     }
 
     /**
