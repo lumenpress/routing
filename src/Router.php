@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use LumenPress\Nimble\Models\Post;
 use LumenPress\Nimble\Models\User;
 use LumenPress\Nimble\Models\Taxonomy;
+use LumenPress\Routing\Exceptions\RouteConditionException;
 
 class Router
 {
@@ -259,7 +260,7 @@ class Router
         }
 
         if (! is_callable($condition)) {
-            throw new \Exception("$key condition does not exists.", 1);
+            throw new RouteConditionException("$key condition does not exists.", 1);
         }
 
         return $condition;

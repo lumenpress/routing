@@ -98,7 +98,20 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Post $post`;
 
 ```php
-Route::is(['template' => 'home'], function (LumenPress\Nimble\Models\Post $post) {});
+// register templates
+LumenPress\Nimble\Models\Post::registerTemplate([
+    'home' => [
+        'name' => 'Home Page'
+    ],
+    'contact' => [
+        'name' => 'Contact Us'
+    ],
+    'about' => [
+        'name' => 'Contact Us'
+    ],
+]);
+
+Route::is(['template' => 'home'], function (\LumenPress\Nimble\Models\Post $post) {});
 
 // Multiple
 Route::is(['template' => 'contact', 'about'], $callback);
@@ -121,11 +134,11 @@ Route Condition
 
 Callback Arguments
 
-- `LumenPress\Nimble\Models\Page $page` `optional`;
+- `LumenPress\Nimble\Models\Post $post` `optional`;
 
 ```php
 // page.php
-Route::is('page', function (LumenPress\Nimble\Models\Page $page) {});
+Route::is('page', function (\LumenPress\Nimble\Models\Post $post) {});
 
 // page-2.php
 Route::is(['page' => 2], $callback);
@@ -148,8 +161,8 @@ Query Condition
 | function | theme file |
 |--|--|
 | is_single() | single.php |
-| is_single($id) | single-`$id`.php |
-| is_single($id) | single-`$id`.php |
+| is_singular($posttype) | single-`$posttype`.php |
+| is_singular($posttype) && is_single($slug) | single-`$posttype`-`$slug`.php |
 
 Route Condition
 
@@ -162,7 +175,7 @@ Callback Arguments
 
 ```php
 // single.php
-Route::is('single', function (LumenPress\Nimble\Models\Post $post) {});
+Route::is('single', function (\LumenPress\Nimble\Models\Post $post) {});
 
 // query by post id
 Route::is(['single' => 1], $callback);
@@ -194,12 +207,12 @@ Query Condition
 | function | theme file |
 |--|--|
 | is_singular() | singular.php |
-| is_singular($postType) | single-`$postType`.php |
+| is_singular($posttype) | single-`$posttype`.php |
 
 Route Condition
 
 - `singular`
-- `['singular' => string|array $postType]`
+- `['singular' => string|array $posttype]`
 
 Callback Arguments
 
@@ -207,7 +220,7 @@ Callback Arguments
 
 ```php
 // singular.php
-Route::is('singular', function (LumenPress\Nimble\Models\Page $post) {});
+Route::is('singular', function (\LumenPress\Nimble\Models\Page $post) {});
 
 // single-book.php
 Route::is(['singular' => 'book'], $callback);
@@ -233,10 +246,13 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Attachment $attachment` `optional`;
 
 ```php
-Route::is('attachment', function (LumenPress\Nimble\Models\Attachment $attachment) {});
+// attachment.php
+Route::is('attachment', $callback);
 ```
 
 ### embed
+
+Since 4.5
 
 Query Condition
 
@@ -253,6 +269,7 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Post $post` `optional`;
 
 ```php
+// embed.php
 Route::is('embed', function (LumenPress\Nimble\Models\Post $post) {});
 ```
 
@@ -275,10 +292,13 @@ Callback Arguments
 - `string $postType` `optional`;
 
 ```php
+// archive.php
 Route::is('archive', $callback);
 
+// archive-book.php
 Route::is(['archive' => 'book'], $callback);
 
+// archive-newspaper.php or archive-book.php
 Route::is(['archive' => ['newspaper', 'book']], function ($postType) {});
 ```
 
@@ -300,15 +320,17 @@ Route Condition
 
 Callback Arguments
 
-- `LumenPress\Nimble\Models\Taxonomy|string $taxonomy` `optional`;
+- `LumenPress\Nimble\Models\Taxonomy $taxonomy` `optional`;
 
 ```php
-Route::is('tax', function ($taxonomy) {});
+// taxonomy.php
+Route::is('tax', function (\LumenPress\Nimble\Models\Taxonomy $taxonomy) {});
 
+// taxonomy-channel.php
 Route::is(['tax' => 'channel'], $callback);
-// Multiple
-Route::is(['tax' => ['channel' => 'BBC1']], $callback);
-Route::is(['tax' => [['channel', 'BBC1']]], $callback);
+
+// taxonomy-channel-bbc1.php
+Route::is(['tax' => [['channel', 'bbc1']]], $callback);
 ```
 
 ### category
@@ -331,12 +353,19 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Category $category` `optional`;
 
 ```php
-Route::is('category', function (LumenPress\Nimble\Models\Category $category) {});
+// category.php
+Route::is('category', function (\LumenPress\Nimble\Models\Category $category) {});
 
+// category-9.php
 Route::is(['category' => 9], $callback);
-Route::is(['category' => 'blue-cheese'], $callback);
+
+// category-news.php
+Route::is(['category' => 'news'], $callback);
+
+// by category name
 Route::is(['category' => 'Stinky Cheeses'], $callback);
 
+// by id, slug, name...
 Route::is(['category' => [9, 'blue-cheese', 'Stinky Cheeses']], $callback);
 ```
 
@@ -360,12 +389,18 @@ Callback Arguments
 - `LumenPress\Nimble\Models\Tag $tag` `optional`;
 
 ```php
-Route::is('tag', function (LumenPress\Nimble\Models\Tag $tag) {});
+// tag.php
+Route::is('tag', function (\LumenPress\Nimble\Models\Tag $tag) {});
 
+// tag-30.php
 Route::is(['tag' => 30], $callback);
+
+// tag-extreme.php
 Route::is(['tag' => 'extreme'], $callback);
+// tag-mild.php
 Route::is(['tag' => 'mild'], $callback);
 
+// by id, slug, name...
 Route::is(['tag' => [30, 'mild', 'extreme']], $callback);
 ```
 
@@ -389,12 +424,19 @@ Callback Arguments
 - `LumenPress\Nimble\Models\User $author` `optional`;
 
 ```php
-Route::is('author', function (LumenPress\Nimble\Models\User $author) {});
+// author.php
+Route::is('author', function (\LumenPress\Nimble\Models\User $user) {});
 
+// author-4.php
 Route::is(['author' => 4], $callback);
+
+// author-john-jones.php
 Route::is(['author' => 'john-jones'], $callback);
+
+// by display name
 Route::is(['author' => 'Vivian'], $callback);
 
+// by mixed
 Route::is(['author' => [4, 'john-jones', 'Vivian']], $callback);
 ```
 
@@ -417,6 +459,7 @@ Callback Arguments
 - `$day` `optional`;
 
 ```php
+// date.php
 Route::is('date', function ($year = null, $month = null, $day = null) {});
 ```
 
@@ -433,6 +476,7 @@ Route Condition
 - `home`
 
 ```php
+// home.php
 Route::is('home', $callback);
 ```
 
@@ -449,6 +493,7 @@ Route Condition
 - `front`
 
 ```php
+// front_page.php
 Route::is('front', $callback);
 ```
 
@@ -465,6 +510,7 @@ Route Condition
 - `search`
 
 ```php
+// search.php
 Route::is('search', $callback);
 ```
 
@@ -481,9 +527,22 @@ Route Condition
 - `404`
 
 ```php
+// 404.php
 Route::is('404', $callback);
 ```
 
 ## Custom Route Condition
 
-coming soon
+```php
+Route::addRouteCondition('author.role', function ($role) {
+    if (! is_author()) {
+        return false;
+    }
+
+    $author = get_queried_object();
+
+    return $role == $author->roles[0];
+});
+
+Route::is(['author.role' => 'administrator'], $callback);
+```
