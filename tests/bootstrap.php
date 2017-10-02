@@ -6,7 +6,11 @@ try {
     //
 }
 
-require realpath(dirname(PHPUNIT_COMPOSER_INSTALL).'/lumenpress/testing/tests/includes/bootstrap.php');
+$packagePath = realpath(dirname(PHPUNIT_COMPOSER_INSTALL).'/lumenpress/testing');
+
+system("php $packagePath/tests/includes/install.php");
+
+require $packagePath.'/tests/wp-tests-load.php';
 
 putenv('APP_DEBUG='.(WP_DEBUG ? 'true' : 'false'));
 putenv('APP_TIMEZONE='.(get_option('timezone_string') ?: 'UTC'));
