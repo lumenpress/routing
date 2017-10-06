@@ -9,8 +9,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('wp.router', function ($app) {
-            return new Router($app);
+        $this->app->singleton('wp.router', function () {
+            return new Router($this->app);
         });
 
         if ($this->isLumen()) {
@@ -32,6 +32,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public function isLumen($version = null)
     {
-        return preg_match('/^Lumen \('.str_replace('.', '\.', $version).'/i', $this->app->version());
+        return stripos($this->app->version(), 'Lumen') !== false;
     }
 }
