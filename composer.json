@@ -12,7 +12,8 @@
     },
     "autoload": {
         "psr-4": {
-            "LumenPress\\Routing\\": "src"
+            "LumenPress\\Routing\\": "src",
+            "LumenPress\\Lumen\\": "src/Lumen/Application"
         }
     },
     "autoload-dev": {

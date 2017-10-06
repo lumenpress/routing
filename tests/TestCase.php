@@ -3,7 +3,7 @@
 namespace LumenPress\Routing\Tests;
 
 use Illuminate\Http\Request;
-use Laravel\Lumen\Application;
+use LumenPress\Lumen\Application;
 use LumenPress\Routing\ServiceProvider;
 use LumenPress\Testing\WordPressTestCase;
 
