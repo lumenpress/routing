@@ -22,6 +22,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
             $app->router = $app;
         }
 
+        do_action('init');
+
         return $app;
     }
 
