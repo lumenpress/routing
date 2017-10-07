@@ -32,8 +32,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function createDispatcher()
     {
         return \FastRoute\simpleDispatcher(function ($r) {
-            $routes = property_exists($this->app, 'router') 
-                ? $this->app->router->getRoutes() 
+            $routes = property_exists($this->app, 'router')
+                ? $this->app->router->getRoutes()
                 : $this->app->getRoutes();
 
             foreach ($routes as $route) {
